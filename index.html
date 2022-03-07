@@ -2,9 +2,137 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>贪吃蛇</title>
+    <noscript>讨厌嘛！还不是以为你不支持JavaScript</noscript>
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <style>
+        canvas{
+            border: 2px solid red;
+            position: absolute;
+            top: 110px;
+            left: 450px;
+            background-color: white;
+            opacity: 0.7;
+        }
+        video{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            object-fit: cover;
+            z-index: -20;
+        }
+        #wai{
+            position: absolute;
+            left: 550px;
+            top: 200px;
+            width: 420px;
+            height: 320px;
+            background-color: aqua;
+        }
+        #text_url{
+            width: 300px;
+            height: 30px;
+            position: relative;
+            left: 50px;
+            top: 50px;
+            font-size: 22px;
+            font-family: 华康方圆体W7, serif;
+        }
+        #nei{
+            position: absolute;
+            left: 630px;
+            top: 310px;
+            width: 170px;
+            height: 50px;
+            background-color: cyan;
+            padding: 30px;
+        }
+        #提交{
+            width: 70px;
+            height: 40px;
+            position: relative;
+        }
+        #重置{
+            width: 70px;
+            height: 40px;
+            position: relative;
+            left: 30px;
+        }
+        #wenzi{
+            position: absolute;
+            top: 115px;
+            left: 635px;
+            font-family: 方正少儿_GBK, serif;
+        }
+    </style>
+    <script>
+        window.onload = function (){
+
+            var b = document.getElementById("audio");
+            var video = document.getElementById("video")
+            b.volume = 0.2;
+            var pan = true;
+            var bo = true;
+
+            video.onmousedown = function (){
+                if (pan){
+                    video.src = "/static/image/4K60fps elm.mp4";
+                    pan = false;
+                    if (bo){
+                        b.play();
+                        bo = false;
+                    }
+                }
+                else{
+                    video.src = "/static/image/18v2.mp4";
+                    pan = true;
+                }
+            }
+        }
+    </script>
 </head>
 <body>
-<h2>哈哈哈<h2/>
+<video src="/static/image/18v2.mp4" autoplay loop muted id="video"></video>
+<audio src="/static/image/slow_loop.mp3" loop id="audio"></audio>
+<canvas width="600" height="500" id="canvas"></canvas>
+<h1 id="wenzi">请输入视频的url</h1>
+<div id="wai">
+    <label>
+        <input type="text" id="text_url">
+    </label>
+</div>
+<div id="nei">
+    <label>
+        <input type="button" id="提交" value="下载">
+        <input type="button" id="重置" value="重置">
+    </label>
+</div>
+<span style="color: black">&#9209;</span>
+<script>
+    var a = document.getElementById("提交");
+    var b = document.getElementById("text_url")
+    a.onclick = function (){
+        var url = b.value;
+        var data = {
+            request_type: "0001",
+            video_url: url
+
+        }
+        $.ajax({
+            url: "/tast/",
+            type: "get",
+            data: data,
+            success: function (res){
+                console.log(res);
+                alert("下载成功了φ(゜▽゜*)♪");
+            },
+            error: function (res){
+                alert("哭唧唧`(*>﹏<*)′,失败了");
+            }
+        })
+    }
+</script>
 </body>
 </html>
