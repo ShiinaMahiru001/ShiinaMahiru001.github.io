@@ -2,40 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>修改内联样式</title>
-    <script>
-        window.onload = function (){
-            //修改内联样式
-            //元素: element.style.type = value;
-            let div = document.getElementById("ab");
-            let bt = document.getElementById("ac");
-
-            bt.onclick = function (){
-                let width = div.style.width;
-                width = String(Number(width.slice(0, -2)) + 30) + "px";
-                div.style.width = width;
-            };
-        };
-    </script>
+    <title>三栏布局 + 冒泡传递</title>
+    <link rel="shortcut icon" href="image/tubiao.ico">
     <style>
-        div{
-            width: 300px;
-            height: 300px;
+        #left{
+            background-color: #bfa;
+            width: 400px;
+            height: 400px;
+            float: left;
+        }
+        #right{
+            background-color: aqua;
+            width: 400px;
+            height: 400px;
+            float: right;
+        }
+        #center{
             background-color: red;
+            width: auto;
+            height: 400px;
+        }
+
+        a{
+            color: blue;
+            padding: 10px 10px;
+            text-decoration: none;
+            display: block;
+        }
+
+        a:hover{
+            background-color: #f1f1f1;
+        }
+
+        #content{
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
         }
 
         button{
-            width: 200px;
-            height: 150px;
-            font-size: 45px;
-            font-family: 方正喵呜体, fangsong;
-            margin: 80px;
+            background-color: #3e8e41;
         }
-    </style>
 
+        #菜单:hover #content{
+            display: block;
+        }
+
+    </style>
+    <script>
+        window.onload = function (){
+            var left = document.getElementById("left").getElementsByTagName("h2")[0];
+            var right = document.getElementById("right").getElementsByTagName("h2")[0];
+            var center = document.getElementById("center").getElementsByTagName("h2")[0];
+            var kuai = document.getElementById("kuai");
+
+
+            document.onmousemove = function (event){
+                let x = event.pageX;
+                let y = event.pageY;
+                kuai.style.top = y + "px";
+                kuai.style.left = x + "px";
+            };
+            document.getElementById("right").onmousemove = function (event){
+                //取消冒泡
+                event.cancelBubble = true;
+
+            };
+            left.onmousemove = function (){
+                alert("你点击了left");
+
+            };
+            right.onmousemove = function (){
+                alert("你点击了right");
+            };
+            center.onmousemove = function (){
+                alert("你点击了center");
+            };
+
+        };
+    </script>
 </head>
 <body>
-<div id="ab" style="width: 400px;height: 300px;"></div>
-<button id="ac">点击一下</button>
+<div id="fud">
+    <div id="left"><h2>我是左边的响应函数</h2></div>
+    <div id="right"><h2>我是右边的响应函数</h2></div>
+    <div id="center">
+        <h2>我是中间的响应函数</h2>
+        <div id="菜单">
+            <hr/><button>这是下拉菜单</button>
+            <div id="content">
+                <a href="javascript:">一号</a>
+                <a href="javascript:">二号</a>
+                <a href="javascript:">三号</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="width: 100px;height: 100px; background-color: black; position: absolute;" id="kuai"><audio src="http://music.163.com/song/media/outer/url?id=412327106.mp3" controls></audio></div>
+
 </body>
 </html>
