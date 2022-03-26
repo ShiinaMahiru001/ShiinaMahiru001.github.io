@@ -2,335 +2,189 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ShiinaMahiru的音乐播放器1.0</title>
-    <link rel="shortcut icon" href="image/tubiao.ico">
+    <title>Title</title>
     <style>
-        #main{
-            background: url("__image/bg_img.jpg") no-repeat;
-            /*TODO 待会来调透明度*/
-            opacity: 0.9;
-            width: 1200px;
-            height: 400px;
-            box-shadow: 12px 13px 9px 2px black;
+        body {
+            background-color: #66B2FF;
+        }
+
+        .main {
+            border: 10px solid #47eee7;
+            margin-left: 23%;
+            margin-top: 2%;
+            background-color: #543f11;
             position: relative;
-            margin-bottom: 50px;
-        }
-        li{
-            display: inline-block;
-        }
-        li img{
-            border-radius: 50%;
-            cursor: pointer;
-            position: absolute;
 
-        }
-        /*旋转动画特效*/
-        @keyframes ima_rotate {
-            from{transform: rotate(0deg)}
-            to{transform: rotate(360deg)}
-        }
-        .img{
-            animation: ima_rotate 2s infinite linear;
-        }
-        @keyframes cancel {
-            from{transform: translateX(0px)}
-            to{transform: translateX(-487px)}
-        }
-        .close{
-            animation: cancel 1s linear forwards;
-        }
+            width: 603px;
+            height: 597px;
+            padding-top: 3px;
 
 
-        #vedio_control{
-            width: 500px;
-            height: 114px;
-            background-color: #1e1b1b;
-            position: fixed;
-            bottom: 70px;
-            box-shadow: 12px 13px 9px 2px black;
+        }
+
+        .main .cell {
+            width: 30px;
+            height: 30px;
+            background-color: orange;
+
+            position: absolute;
+            display: none;
+            margin-top: -2px;
+            margin-left: 1px;
+            border: 1px solid red;
 
         }
-        #all_bt #bt_next{
-            position: absolute;
-            background: url("__image/图标.jpg") no-repeat -6px -151px;
-            width: 43px;
-            height: 43px;
-            border-radius: 50%;
-            left: 378px;
-            top: -9px;
-            cursor: pointer;
-        }
-        #all_bt #bt_previous{
-            position: absolute;
-            background: url("__image/图标.jpg") no-repeat -121px -152px;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            left: 271px;
-            top: -9px;
-            cursor: pointer;
-        }
-        #all_bt #bt_play{
-            position: absolute;
-            background: url("__image/图标.jpg") no-repeat -6px -87px;
-            width: 43px;
-            height: 43px;
-            border-radius: 50%;
-            left: 326px;
-            top: -9px;
-            cursor: pointer;
-        }
-        #all_bt #bt_zanting{
-            position: absolute;
-            background: url("__image/图标.jpg") no-repeat -6px -87px;
-            width: 43px;
-            height: 43px;
-            border-radius: 50%;
-            left: 326px;
-            top: -9px;
-            cursor: pointer;
-        }
-        /*点击特效*/
-        #all_bt #bt_play:hover{
-            background-position: -63px -87px!important;
-        }
-        #all_bt #bt_zanting:hover{
-            background-position: -177px -87px!important;
-        }
-        #all_bt #bt_next:hover{
-            background-position: -62px -151px!important;
-        }
-        #all_bt #bt_previous:hover{
-            background-position: -176px -151px!important;
-        }
-        #close:hover{
-            background-position: -217px -210px!important;
-        }
-        #open:hover{
-            background-position: -267px -210px!important;
-        }
-        #close{
-            background: url("__image/图标.jpg") -185px -210px no-repeat;
-            width: 20px;
-            height: 114px;
-            position: absolute;
-            left: 480px;
-            cursor: pointer;
-        }
-        #open{
-            background: url("__image/图标.jpg") -241px -210px no-repeat;
-            width: 20px;
-            height: 114px;
-            position: absolute;
-            left: 480px;
-            cursor: pointer;
-        }
-        /*html背景色*/
+
     </style>
-    <script>
-        window.onload = function (){
-            var imgAll = document.getElementsByTagName("img");
-            imgAll[0].style.left = "88px";
-            imgAll[0].style.top = "241px";
-
-            imgAll[1].style.left = "285px";
-            imgAll[1].style.top = "82px";
-
-            imgAll[2].style.left = "526px";
-            imgAll[2].style.top = "148px";
-
-            imgAll[3].style.left = "800px";
-            imgAll[3].style.top = "264px";
-
-            imgAll[4].style.left = "1020px";
-            imgAll[4].style.top = "110px";
-
-
-
-        };
-    </script>
 </head>
-
-
 <body>
-<!--背景特效-->
-
-
-<!--主视图组件-->
-<div id="main"></div>
-
+<main>
+    <div class="main"></div>
+</main>
+<div id="display"
+     style="background-color: white;position: absolute; right: 200px; top: 100px; width: 100px; height: 80px; border: 1px solid black; padding-left: 30px; padding-top: 30px"></div>
 <script>
-    var main = document.getElementById("main");
-    var ul = document.createElement("ul");
-    ul.innerHTML = `<li data-model-name="412327106"><img alt="图片加载失败" src="mini_Image/1.jpg" title="evergreen-鹿乃" style="width: 65px"></li>
-                    <li data-model-name="26830207"><img alt="图片加载失败" src="mini_Image/2.jpg" title="僕が死のうと思ったのは-中岛美嘉" style="width: 90px"></li>
-                    <li data-model-name="1387099644"><img alt="图片加载失败" src="mini_Image/5.jpg" title="憂一乗-ヨルシカ" style="width: 120px"></li>
-                    <li data-model-name="1884490658"><img alt="图片加载失败" src="mini_Image/3.jpg" title="Oz.-yama" style="width: 90px"></li>
-                    <li data-model-name="1501477656"><img alt="图片加载失败" src="mini_Image/4.jpg" title="シス×ラブ-Hanon&Kotona" style="width: 65px"></li>`
-    ul.style.listStyleType = "none"
-    main.appendChild(ul);
-</script>
-<!--浮动的栏组件-->
-<div id="vedio_control"></div>
-
-<script>
-    var img = document.createElement("img");
-    var vedio = document.getElementById("vedio_control");
-    var biaoti = document.createElement("h3");
-    var bt = document.createElement("div");
-    var audio = document.createElement("audio");
-    var div = document.createElement("div");
-
-    img.src= "mini_Image/1.jpg";
-    img.style.float = "left";
-    img.style.width = "100px";
-    img.style.height = "100px";
-    img.style.margin = "7px";
-
-    biaoti.innerText = "evergreen";
-    biaoti.style.color = "white";
-    biaoti.style.position = "relative";
-    biaoti.style.left = "12px";
-    biaoti.style.top = "32px";
-    biaoti.style.fontSize = "16px";
-    biaoti.style.fontFamily = "华康布丁体W12,fangsong";
-    biaoti.style.float = "left";
-
-    bt.id = "all_bt";
-    bt.innerHTML = `<a href="#" id="bt_previous" title="上一首"></a>
-                    <a href="#" id="bt_play" title="播放"></a>
-                    <a href="#" id="bt_next" title="下一首"></a>`;
-    bt.style.position = "relative";
-    bt.style.left = "52px";
-    bt.style.top = "47px";
-
-    audio.src = "http://music.163.com/song/media/outer/url?id=412327106.mp3";
-    audio.volume = 0.2;
-
-    div.id = "close";
-
-
-    vedio.appendChild(img);
-    vedio.appendChild(biaoti);
-    vedio.appendChild(bt);
-    vedio.appendChild(audio);
-    vedio.appendChild(div);
-
-
-</script>
-<!--下面是JavaScript控制-->
-<script>
-    var all_a = document.getElementsByTagName("a");
-    var all_image = document.querySelectorAll("li img")
-
-    for (let i = 0; i < all_image.length; i++) {
-        all_image[i].onclick = function () {
-            //  获取自定义属性 dataset.驼峰
-            let id = this.parentElement.dataset.modelName;
-            audio.src = "http://music.163.com/song/media/outer/url?id=" + id + ".mp3";
-            img.src = this.src;
-            biaoti.innerText = this.title.split("-")[0];
-            if (audio.paused === true) {
-                all_a[1].style.backgroundPosition = '-121px -87px';
-                all_a[1].id = "bt_zanting";
-                all_a[1].title = "暂停";
-            }
-            for (let j = 0; j < all_image.length; j++) {
-                all_image[j].className = "no";
-            }
-            this.className = "img";
-
-            audio.play();
-
-        };
+    let main = document.getElementsByClassName("main")[0];
+    for (let i = 1; i <= 20; i++) {
+        for (let j = 1; j <= 20; j++) {
+            let cell = document.createElement("div");
+            cell.className = "cell";
+            cell.id = "cell_" + i + "_" + j;
+            cell.style.left = (j - 1) * 30 + "px";
+            cell.style.top = (i - 1) * 30 + "px";
+            main.appendChild(cell);
+        }
     }
+</script>
+<script>
 
+    let rect = document.getElementById("display");
+    rect.innerText = "得分: 0";
+</script>
+<script>
+    //创建蛇对象
+    function Snake(){
+        this.direction = "up";//蛇的方向默认向上
+        this.body = [[9, 10],
+                     [10, 10],
+                     [11, 10]];//蛇的默认身体
+        //this.display = {};//画出蛇的身体
+        //this.run = {};//蛇的运动
+        //this.undisplay = {};//擦掉蛇身
+        this.memory = null;
+    }
+    let snake = new Snake();
+    snake.display = function (){
+        for (let i = 0; i < snake.body.length; i++) {
+            let el = document.getElementById("cell_"+snake.body[i][0]+"_"+snake.body[i][1]);
+            try {
+                el.style.display = "block";
+                el.style.borderRadius = "50%";
+            }
+            catch (e) {
+                alert("傻逼, 撞墙了!!");
+                location.reload();
+            }
 
-    all_a[1].onclick = function (){
-        if(audio.paused === false) {
-            //播放变暂停
-            all_a[1].style.backgroundPosition = "-6px -87px";
-            all_a[1].id = "bt_play";
-            all_a[1].title = "播放";
-            for (let j = 0; j < all_image.length; j++) {
-                    all_image[j].className = "no";
-                }
-            audio.pause();
-        }
-        else{
-            //暂停变播放
-            all_a[1].style.backgroundPosition = '-121px -87px';
-            all_a[1].id = "bt_zanting";
-            all_a[1].title = "暂停";
-            for (let j = 0; j < all_image.length; j++) {
-                    all_image[j].className = "no";
-                }
-            for (let i = 0; i < all_image.length; i++) {
-            if (all_image[i].title.split("-")[0] === biaoti.innerText) {
-                all_image[i].className = "img";
-            }}
-            audio.play();
         }
     };
-    all_a[0].onclick = function () {
-        for (let i = 0; i < all_image.length; i++) {
-            if (all_image[i].title.split("-")[0] === biaoti.innerText) {
-                if (i === 0 ) {
-                    i = all_image.length;
+    snake.undisplay = function (){
+        for (let i = 1; i <= 20; i++) {
+            for (let j = 1; j <= 20; j++) {
+                if (document.getElementById("cell_" + i + "_" + j).style.backgroundColor !== food.color){
+                    document.getElementById("cell_" + i + "_" + j).style.display = "none";
+                    document.getElementById("cell_" + i + "_" + j).style.borderRadius = "0";
                 }
-                let id = all_image[i-1].parentElement.dataset.modelName;
-                audio.src = "http://music.163.com/song/media/outer/url?id=" + id + ".mp3";
-                img.src = all_image[i-1].src;
-                biaoti.innerText = all_image[i-1].title.split("-")[0];
-                for (let j = 0; j < all_image.length; j++) {
-                    all_image[j].className = "no";
-                }
-                all_image[i-1].className = "img";
-                audio.play();
-                break;
             }
         }
-
     };
-    all_a[2].onclick = function () {
-        for (let i = 0; i < all_image.length; i++) {
-            if (all_image[i].title.split("-")[0] === biaoti.innerText) {
-                if (i === all_image.length-1 ) {
-                    i = -1;
-                }
-                let id = all_image[i+1].parentElement.dataset.modelName;
-                audio.src = "http://music.163.com/song/media/outer/url?id=" + id + ".mp3";
-                img.src = all_image[i+1].src;
-                biaoti.innerText = all_image[i+1].title.split("-")[0];
-
-                for (let j = 0; j < all_image.length; j++) {
-                    all_image[j].className = "no";
-                }
-                all_image[i+1].className = "img";
-                audio.play();
-                break;
+    snake.run_func = function (){
+        if (snake.body[0][0] === food.position[0] && snake.body[0][1] === food.position[1]) {
+            snake.body[snake.body.length] = [snake.memory[0], snake.memory[1]];
+            document.getElementById("cell_" + food.position[0] + "_" + food.position[1]).style.backgroundColor = "orange";
+            ii = true;
+            rect.innerText = String("得分: "+(Number(rect.innerText.charAt(4)) + 1));
+        }
+        for (let i = 1; i < snake.body.length; i++) {
+            if (snake.body[i][0] === snake.body[0][0] && snake.body[i][1] === snake.body[0][1]){
+                alert("傻逼吃到自己了");
+                location.reload();
             }
         }
+    }
+    snake.run = function (){
+        //使蛇身的位置都等于前一个蛇身的位置(除头外)
+        snake.memory = snake.body[snake.body.length-1];
 
-    };
-    var pan = true;
-    div.onclick = function () {
-        if (pan) {
-            vedio.animate([{transform: 'translateX(0px)'},{transform: 'translateX(-487px)'}], {duration: 1000, fill: 'forwards'});
-            pan = false;
-        //    vedio.className = "close";
-            div.id = "open";
-
+        for (let i = snake.body.length-1; i > 0; i--) {
+            snake.body[i][0] = snake.body[i-1][0];
+            snake.body[i][1] = snake.body[i-1][1];
         }
-        else {
-            pan = true;
-            vedio.animate([{transform: 'translateX(-487px)'},{transform: 'translateX(0px)'}], {duration: 1000, fill: 'forwards'});
-            div.id = "close";
-
+        //控制头运动
+        switch (snake.direction) {
+            case "up":
+            {
+                snake.body[0][0]--;
+                snake.run_func();
+            }
+                break;
+            case "left":
+            {
+                snake.body[0][1]--;
+                snake.run_func();
+            }
+                break;
+            case "down":
+            {
+                snake.body[0][0]++;
+                snake.run_func();
+            }
+                break;
+            case "right":
+            {
+                snake.body[0][1]++;
+                snake.run_func();
+            }
+                break;
         }
     };
+    //创建食物对象
+    function Food() {
+        this.color = "yellow";
+        this.position = [];
+        this.func = function (){
+            let a = Math.round(Math.random()*19+1), b = Math.round(Math.random()*19+1);
+            for (let i = 0; i < snake.body.length; i++) {
+                if (snake.body[i][0] === a && snake.body[i][1] === b) {
+                    this.func();
+                }
+            }
+            return [a, b];
+        }
+        this.display = function (arr) {
+            document.getElementById("cell_" + arr[0] + "_" + arr[1]).style.display = "block";
+            document.getElementById("cell_" + arr[0] + "_" + arr[1]).style.backgroundColor = this.color;
+        }
 
-
+    }
+    let food = new Food();
+    document.onkeydown = function (e){
+        if(e.key === "ArrowUp" && snake.direction !== "down"){snake.direction = "up";}
+        if(e.key === "ArrowLeft" && snake.direction !== "right"){snake.direction = "left";}
+        if(e.key === "ArrowDown" && snake.direction !== "up"){snake.direction = "down";}
+        if(e.key === "ArrowRight" && snake.direction !== "left"){snake.direction = "right";}
+    };
+    let ii = true;
+    (function (){
+        snake.undisplay();
+        if (ii){
+            food.display(food.position = food.func());
+            ii = false;
+        }
+        snake.display();
+        snake.run();
+        setTimeout(arguments.callee, 200);
+    })();
 </script>
 </body>
 </html>
